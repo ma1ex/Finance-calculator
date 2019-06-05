@@ -20,10 +20,10 @@ let appData = {
 };
 
 /**
- * С этой функции начинается опрос пользователя и наполнение данными основного 
- * объекта
+ * С этой функции начинается опрос пользователя, расчет дневного бюджета и 
+ * наполнение данными основного объекта.
  */
-function start() {
+function detectDayBudget() {
     let moneyInMonth = +prompt("Ваш бюджет на месяц?", '');
     while (isNaN(moneyInMonth) || moneyInMonth == '' || moneyInMonth == null) {
         moneyInMonth = +prompt("Ваш бюджет на месяц?", '');        
@@ -34,8 +34,10 @@ function start() {
     let time = prompt("Введите дату в формате YYYY-MM-DD", '');
     appData.timeData = time;
     console.log("TCL: start -> appData.timeData", appData.timeData);
+
+    alert("Ваш бюджет на один день: " + appData.oneDayBudget + ' рублей.');
 }
-start();
+detectDayBudget();
 
 /**
  * Введение данных обязательной статьи расходов.
@@ -60,17 +62,33 @@ function chooseExpenses() {
 chooseExpenses();
 console.log("TCL: appData.expenses", appData.expenses);
 
-alert("Ваш бюджет на один день: " + appData.oneDayBudget + ' рублей.');
-
-if (appData.oneDayBudget < 100) {
-    console.log("У Вас минимальный уровень достатка...");
-} else if (appData.oneDayBudget > 100 && appData.oneDayBudget < 700) {
-    console.log("У Вас средний уровень достатка.");
-} else if (appData.oneDayBudget > 700) {
-    console.log("У Вас высокий уровень достатка!");
-} else {
-    console.log("Произошла непредвиденная ошибка!", '');
+/**
+ * Определения статьи необязательных расходов.
+ */
+function chooseOptExpenses() {
+    for (let i = 1; i < 4; i++) {
+        let question = prompt("Введите наименование статьи необязательных расходов:", '');
+        appData.optionalExpenses[i] = question;
+    }
+    console.log("TCL: chooseOptExpenses -> appData.optionalExpenses", appData.optionalExpenses);
 }
+chooseOptExpenses();
+
+/**
+ * Расчет уровня достатка
+ */
+function detectLevel() {
+    if (appData.oneDayBudget < 100) {
+        console.log("У Вас минимальный уровень достатка...");
+    } else if (appData.oneDayBudget > 100 && appData.oneDayBudget < 700) {
+        console.log("У Вас средний уровень достатка.");
+    } else if (appData.oneDayBudget > 700) {
+        console.log("У Вас высокий уровень достатка!");
+    } else {
+        console.log("Произошла непредвиденная ошибка!", '');
+    }
+}
+detectLevel();
 
 /**
  * Определение наличия депозита.

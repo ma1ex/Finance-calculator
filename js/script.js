@@ -14,7 +14,11 @@ let appData = {
     optionalExpenses: {},             // Объект с необязательными расходами
     income : [],                      // Массив данных с доп. доходом
     savings: false,                   // Есть ли депозиты?
-    get oneDayBudget() {              // Бюджет на один день
+    
+    /**
+     * Бюджет на один день
+     */
+    oneDayBudget: function() { 
         return ( (this.budget / 30 ).toFixed(2) );
     },
 
@@ -55,7 +59,7 @@ let appData = {
         appData.timeData = time;
         console.log("TCL: start -> appData.timeData", appData.timeData);
 
-        alert("Ваш бюджет на один день: " + appData.oneDayBudget + ' рублей.');
+        alert("Ваш бюджет на один день: " + appData.oneDayBudget() + ' рублей.');
     },
 
     /**
@@ -104,10 +108,38 @@ let appData = {
      */
     chooseIncome: function() {
         let items = prompt('Что принесет дополнительный доход? (Перечислите через запятую)', '');
-        appData.income = items.split(', ');
-        appData.income.push(prompt('Может что-то еще?', ''));
-        appData.income.sort();
-        console.dir("TCL: appData.chooseIncome()", appData.income);
+        while(true) {
+            if (typeof(items) === 'string' && typeof(items) != null && items != '' ) {
+                appData.income = items.split(', ');
+                
+                let addItems = prompt('Может что-то еще?', '');
+                if (typeof(addItems) === 'string' && typeof(addItems) != null && addItems != '') {
+                    appData.income.push(addItems);
+                }
+                
+                appData.income.sort();
+                console.dir("TCL: appData.chooseIncome()", appData.income);
+                break;
+            } else {
+                items = prompt('Что принесет дополнительный доход? (Перечислите через запятую)', '');
+            }
+        }
+
+        // Дополнительные способы заработка
+        let addIncome = prompt('Перечислите через запятую способы дополнительного заработка:', '');
+        let addIncomeArr = [];
+        while(true) {
+            if (typeof(addIncome) === 'string' && typeof(addIncome) != null && addIncome != '') {
+                addIncomeArr = addIncome.split(', ');
+                break;
+            } else {
+                addIncome = prompt('Перечислите через запятую способы дополнительного заработка:', '');
+            }
+        }
+        console.log('Способ дополнительного заработка:');
+        addIncomeArr.forEach(function(item, i) {
+            console.log(`  - [${i+1}]: ${item}`);
+        });
     }
 };
 
@@ -118,4 +150,8 @@ appData.detectLevel();
 appData.checkSavings();
 appData.chooseIncome();
 
-console.dir(appData);
+// console.dir(appData);
+console.log('Наша программа включает в себя данные:');
+for(let i in appData) {
+    console.log(`  |- ${i}`);
+}

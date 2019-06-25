@@ -143,15 +143,77 @@ let appData = {
     }
 };
 
-appData.detectDayBudget();
-appData.chooseExpenses();
-appData.chooseOptExpenses();
-appData.detectLevel();
-appData.checkSavings();
-appData.chooseIncome();
+// appData.detectDayBudget();
+// appData.chooseExpenses();
+// appData.chooseOptExpenses();
+// appData.detectLevel();
+// appData.checkSavings();
+// appData.chooseIncome();
 
 // console.dir(appData);
-console.log('Наша программа включает в себя данные:');
+/* console.log('Наша программа включает в себя данные:');
 for(let i in appData) {
     console.log(`  |- ${i}`);
-}
+} */
+
+// -= 1 =- =====================================================================
+
+// Получить кнопку "Начать расчет" через id
+let buttonStart = document.getElementById('start');
+// console.log("buttonStart: ", buttonStart);
+
+
+// -= 2 =- =====================================================================
+
+/**
+ * Получить все блоки в правой части программы через классы (которые имеют 
+ * класс название-value, начиная с <div class="budget-value"></div> и заканчивая 
+ * <div class="yearsavings-value"></div>)
+ */
+let blocksValue = [];
+document.querySelectorAll('.result-table > div').forEach(function(item) {
+    if (item.matches('div[class$="-value"]')) {
+        blocksValue.push(item);
+    }
+});
+// console.dir(blocksValue);
+
+
+// -= 3 =- =====================================================================
+// Получить поля(input) c обязательными расходами через класс. (class=”expenses-item”)
+let inputExpenses = document.getElementsByClassName('expenses-item');
+// console.dir(inputExpenses);
+
+
+// -= 4 =- =====================================================================
+// Получить кнопки “Утвердить” и “Рассчитать” через Tag, каждую в своей переменной.
+
+let btnApprove1 = document.querySelectorAll('div.data > button')[0],
+    btnApprove2 = document.querySelectorAll('div.data > button')[1],
+    btnCalculate = document.querySelectorAll('div.data > button')[2];
+// console.log("btnApprove1", btnApprove1);
+// console.log("btnApprove2", btnApprove2);
+// console.log("btnCalculate", btnCalculate);
+
+// -= 5 =- =====================================================================
+// Получить поля для ввода необязательных расходов (optionalexpenses-item) 
+// при помощи querySelectorAll
+let inputOptionalExpenses = document.querySelectorAll('.optionalexpenses-item');
+// console.dir("inputOptionalExpenses", inputOptionalExpenses);
+
+// -= 6 =- =====================================================================
+// Получить оставшиеся поля через querySelector (статьи возможного дохода, 
+// чекбокс, сумма, процент, год, месяц, день)
+let inputChooseIncome = document.querySelector('.choose-income'),
+    checkboxSavings = document.querySelector('#savings'),
+    inputChooseSum = document.querySelector('#sum'),
+    inputPercent = document.querySelector('#percent'),
+    inputYear = document.querySelector('.year-value'),
+    inputMonth = document.querySelector('.month-value'),
+    inputDay = document.querySelector('.day-value');
+
+
+// -= Bonus =- =================================================================
+// Как можно изменить размер шрифта элемента при помощи JS?
+let element = document.querySelector('.count-budget');
+element.style.fontSize = '20px';
